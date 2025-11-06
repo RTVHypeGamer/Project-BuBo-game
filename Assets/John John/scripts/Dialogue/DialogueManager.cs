@@ -1,9 +1,11 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using Unity.AppUI.UI;
 public class DialogueManager : MonoBehaviour
 {
     public TextMeshProUGUI textComponent;
+    public GameObject dialogueBox;
     public string[] lines;
     public float textSpeed;
 
@@ -13,7 +15,7 @@ public class DialogueManager : MonoBehaviour
     void Start()
     {
         textComponent.text = string.Empty;
-        gameObject.SetActive(false);
+        dialogueBox.SetActive(false);
     }
 
     // Update is called once per frame
@@ -23,6 +25,7 @@ public class DialogueManager : MonoBehaviour
         {
             if (textComponent.text == lines[index])
             {
+                textComponent.text = lines[index];
                 NextLine();
             }
             else
@@ -35,7 +38,8 @@ public class DialogueManager : MonoBehaviour
 
     public void StartDialogue()
     {
-        gameObject.SetActive(true);
+        dialogueBox.SetActive(true);
+        textComponent.text = string.Empty;
         index = 0;
         StartCoroutine(TypeLine());
         
@@ -55,14 +59,13 @@ public class DialogueManager : MonoBehaviour
         if (index < lines.Length - 1)
         {
             index++;
-            textComponent.text = string.Empty;
             StartCoroutine(TypeLine());
         }
         else
         {
-            StopAllCoroutines();
             textComponent.text = string.Empty;
-            gameObject.SetActive(false);
+            StopAllCoroutines();
+            dialogueBox.SetActive(false);
         }
     }
 }
